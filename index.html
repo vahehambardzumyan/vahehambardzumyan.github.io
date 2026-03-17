@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VAHE HAMBARDZUMYAN // AI_ML_ENGINEER</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=Share+Tech+Mono&family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+:root{
+  --g:#00ff41;--gd:#00aa2a;--gk:#003b0f;
+  --amb:#ffb000;--cy:#00eeff;--rd:#ff2244;
+  --bg:#080d08;--bg2:#0b120b;
+  --glow:0 0 3px #00ff4188,0 0 7px #00ff4122;
+  --glow-a:0 0 3px #ffb00088,0 0 7px #ffb00022;
+  --glow-c:0 0 3px #00eeff88,0 0 7px #00eeff22;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--g);
+  font-family:'Share Tech Mono',monospace;
+  font-size:14px;line-height:1.7;
+  overflow-x:hidden;cursor:crosshair;
+}
+/* Scanlines — CSS only, no canvas */
+body::before{
+  content:'';position:fixed;inset:0;
+  background:repeating-linear-gradient(180deg,transparent,transparent 3px,rgba(0,255,65,.016) 3px,rgba(0,255,65,.016) 4px);
+  pointer-events:none;z-index:900;
+}
+body::after{
+  content:'';position:fixed;inset:0;
+  background:radial-gradient(ellipse at 50% 50%,transparent 55%,rgba(0,0,0,.65) 100%);
+  pointer-events:none;z-index:901;
+}
+/* Pixel grid bg */
+.pgbg{
+  position:fixed;inset:0;
+  background-image:linear-gradient(rgba(0,255,65,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,65,.035) 1px,transparent 1px);
+  background-size:32px 32px;z-index:0;pointer-events:none;
+}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:500;
+  background:rgba(8,13,8,.97);border-bottom:1px solid var(--gk);
+  padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:50px;
+}
+.nav-logo{font-family:'Press Start 2P',monospace;font-size:9px;color:var(--g);text-shadow:var(--glow);letter-spacing:1px}
+.nav-logo em{color:var(--amb);font-style:normal}
+nav ul{display:flex;gap:1.6rem;list-style:none}
+nav ul a{color:var(--gd);text-decoration:none;font-size:11px;letter-spacing:1px;text-transform:uppercase;transition:color .15s}
+nav ul a:hover{color:var(--g);text-shadow:var(--glow)}
+.nav-hp{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--gd)}
+.hp-heart{color:var(--rd);font-size:15px;animation:hb 2.2s ease infinite}
+.hp-heart.e{color:var(--gk);animation:none}
+@keyframes hb{0%,100%{transform:scale(1)}50%{transform:scale(1.25)}}
+
+/* ── HERO ── */
+#hero{
+  min-height:100vh;display:flex;flex-direction:column;
+  justify-content:center;align-items:center;
+  padding:6rem 2rem 4rem;position:relative;text-align:center;z-index:1;
+}
+.particles{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.pt{
+  position:absolute;width:3px;height:3px;background:var(--gk);
+  animation:pfloat linear infinite;
+}
+@keyframes pfloat{
+  0%{transform:translateY(100vh) translateX(0);opacity:0}
+  10%{opacity:.8}90%{opacity:.3}
+  100%{transform:translateY(-5vh) translateX(var(--dx));opacity:0}
+}
+.hero-inner{position:relative;z-index:2;max-width:800px}
+.lvl-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  border:1px solid var(--gk);padding:4px 14px;
+  margin-bottom:1.4rem;font-size:11px;color:var(--gd);letter-spacing:2px;
+}
+.lvl-n{font-family:'VT323',monospace;font-size:20px;color:var(--amb);text-shadow:var(--glow-a)}
+.hero-name{
+  font-family:'Press Start 2P',monospace;
+  font-size:clamp(14px,3.2vw,30px);line-height:1.6;
+  text-shadow:var(--glow);margin-bottom:.4rem;
+  animation:flicker 9s infinite;
+}
+.hero-name em{color:var(--amb);text-shadow:var(--glow-a);font-style:normal}
+@keyframes flicker{0%,94%,100%{opacity:1}95%{opacity:.6}96%{opacity:1}98%{opacity:.8}}
+.hero-class{
+  font-family:'VT323',monospace;font-size:clamp(18px,4vw,34px);
+  color:var(--cy);letter-spacing:3px;text-shadow:var(--glow-c);margin-bottom:1.5rem;
+}
+.tw-wrap{font-size:13px;color:var(--gd);min-height:22px;margin-bottom:2rem}
+.cur{display:inline-block;width:8px;height:13px;background:var(--g);vertical-align:text-bottom;margin-left:2px;animation:blink .75s step-end infinite}
+.rpg-stats{display:flex;gap:1.2rem;justify-content:center;flex-wrap:wrap;margin-bottom:2.5rem}
+.rstat{
+  border:1px solid var(--gk);padding:10px 14px;text-align:center;
+  background:rgba(0,255,65,.02);min-width:96px;transition:all .25s;
+}
+.rstat:hover{border-color:var(--g);box-shadow:var(--glow)}
+.rstat-v{font-family:'VT323',monospace;font-size:30px;color:var(--amb);text-shadow:var(--glow-a);display:block}
+.rstat-n{font-size:9px;color:var(--gd);letter-spacing:1px}
+.btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.btn{
+  font-family:'Share Tech Mono',monospace;font-size:12px;
+  padding:10px 22px;border:2px solid var(--g);background:transparent;
+  color:var(--g);cursor:pointer;text-transform:uppercase;
+  letter-spacing:2px;text-decoration:none;transition:background .2s,box-shadow .2s;
+}
+.btn:hover{background:rgba(0,255,65,.1);box-shadow:var(--glow)}
+.btn-a{border-color:var(--amb);color:var(--amb)}
+.btn-a:hover{background:rgba(255,176,0,.1);box-shadow:var(--glow-a)}
+
+/* ── SECTIONS ── */
+section{padding:5rem 2rem;position:relative;z-index:1}
+.s-head{text-align:center;margin-bottom:3rem}
+.s-tag{font-size:10px;color:var(--gd);letter-spacing:3px;text-transform:uppercase;margin-bottom:.4rem}
+.s-title{font-family:'Press Start 2P',monospace;font-size:clamp(10px,2vw,17px);text-shadow:var(--glow);margin-bottom:.8rem}
+.s-title em{color:var(--amb);font-style:normal}
+.s-line{width:100px;height:1px;background:linear-gradient(90deg,transparent,var(--g),transparent);margin:0 auto}
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .45s ease,transform .45s ease}
+.reveal.in{opacity:1;transform:translateY(0)}
+
+/* ── QUEST LOG ── */
+#story{background:var(--bg2)}
+.quest-log{max-width:800px;margin:0 auto;position:relative}
+.quest-log::before{
+  content:'';position:absolute;left:24px;top:0;bottom:0;width:2px;
+  background:linear-gradient(180deg,transparent,var(--gk) 5%,var(--gk) 95%,transparent);
+}
+.qi{display:flex;gap:1.4rem;margin-bottom:2.2rem;position:relative}
+.qdot{
+  flex-shrink:0;width:50px;height:50px;border:2px solid var(--gk);
+  background:var(--bg);display:flex;align-items:center;justify-content:center;
+  font-size:20px;z-index:2;transition:border-color .3s,box-shadow .3s;
+}
+.qi:hover .qdot{border-color:var(--amb);box-shadow:var(--glow-a)}
+.qbody{
+  flex:1;border:1px solid var(--gk);padding:1.1rem 1.3rem;
+  background:rgba(0,255,65,.013);transition:border-color .3s;
+}
+.qi:hover .qbody{border-color:var(--gd)}
+.qmeta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:.4rem}
+.qyear{font-family:'VT323',monospace;font-size:18px;color:var(--amb);text-shadow:var(--glow-a)}
+.qt{font-size:9px;padding:2px 7px;border:1px solid currentColor;letter-spacing:1px}
+.qt-edu{color:var(--cy)}.qt-work{color:var(--g)}.qt-ach{color:var(--amb)}
+.qtitle{font-family:'VT323',monospace;font-size:21px;color:var(--g);margin-bottom:.2rem;text-shadow:0 0 4px var(--g)}
+.qorg{font-size:12px;color:var(--amb);margin-bottom:.4rem}
+.qdesc{font-size:12px;color:var(--gd);line-height:1.55}
+.qxp{display:inline-block;margin-top:.6rem;font-size:10px;color:var(--amb);border:1px solid var(--gk);padding:2px 9px}
+.qxp::before{content:'+ '}.qxp::after{content:' XP'}
+
+/* ── SKILLS ── */
+#skills .wrap{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:1.4rem}
+.scat{border:1px solid var(--gk);padding:1.3rem;background:rgba(0,255,65,.013);transition:border-color .3s}
+.scat:hover{border-color:var(--gd)}
+.scat-title{font-family:'VT323',monospace;font-size:20px;color:var(--amb);margin-bottom:.9rem;letter-spacing:2px}
+.scat-title::before{content:'> ';color:var(--g)}
+.sbar{margin-bottom:10px}
+.sbar-top{display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px;color:var(--gd)}
+.sbar-top b{color:var(--g)}
+.sbar-track{height:9px;background:var(--gk);overflow:hidden}
+.sbar-fill{
+  height:100%;width:0;
+  background:repeating-linear-gradient(90deg,var(--g) 0,var(--g) 7px,transparent 7px,transparent 9px);
+  box-shadow:0 0 5px var(--g);transition:width 1.3s cubic-bezier(.16,1,.3,1);
+}
+.sbar-fill.on{width:var(--w)}
+
+/* ── PROJECTS ── */
+#projects{background:var(--bg2)}
+.inv-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.4rem}
+.icard{
+  border:1px solid var(--gk);padding:1.3rem;
+  background:rgba(0,255,65,.013);position:relative;overflow:hidden;
+  transition:transform .2s,border-color .2s;cursor:default;
+}
+.icard::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--amb),transparent);
+  transform:scaleX(0);transition:transform .3s;
+}
+.icard:hover{transform:translateY(-3px);border-color:var(--gd)}
+.icard:hover::after{transform:scaleX(1)}
+.rarity{position:absolute;top:0;right:0;font-size:9px;padding:3px 7px;letter-spacing:1px}
+.r-epic{background:#3d0070;color:#cc88ff}
+.r-rare{background:#002855;color:var(--cy)}
+.r-unc{background:var(--gk);color:var(--g)}
+.iid{font-size:10px;color:var(--gk);letter-spacing:2px;margin-bottom:.3rem}
+.iname{font-family:'VT323',monospace;font-size:22px;color:var(--g);margin-bottom:.3rem;text-shadow:0 0 4px var(--g)}
+.idesc{font-size:12px;color:var(--gd);line-height:1.5;margin-bottom:.7rem}
+.itags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:.7rem}
+.itag{font-size:10px;padding:2px 6px;border:1px solid var(--gk);color:var(--gd)}
+.istats{display:flex;gap:.9rem;flex-wrap:wrap;border-top:1px solid var(--gk);padding-top:.7rem}
+.istat{font-size:11px;color:var(--gd)}
+.istat b{font-family:'VT323',monospace;font-size:15px;color:var(--amb)}
+
+/* ── ABILITIES ── */
+#expertise .wrap{max-width:900px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.4rem}
+.acard{
+  border:1px solid var(--gk);padding:1.3rem;text-align:center;
+  background:rgba(0,255,65,.013);transition:border-color .3s,box-shadow .3s;position:relative;
+}
+.acard:hover{border-color:var(--cy);box-shadow:var(--glow-c)}
+.aicon{font-size:34px;margin-bottom:.7rem;display:block;filter:drop-shadow(0 0 5px var(--cy))}
+.acd{position:absolute;top:7px;right:7px;font-size:9px;border:1px solid var(--gk);padding:2px 5px;color:var(--gd)}
+.atitle{font-family:'VT323',monospace;font-size:19px;color:var(--amb);margin-bottom:.4rem;letter-spacing:2px}
+.adesc{font-size:11px;color:var(--gd);line-height:1.5}
+
+/* ── TERMINAL ── */
+#terminal-section{padding:4rem 2rem}
+.term-win{max-width:760px;margin:0 auto;border:1px solid var(--gd);background:#040904;box-shadow:var(--glow)}
+.term-bar{background:#0a110a;padding:7px 12px;display:flex;align-items:center;gap:6px;border-bottom:1px solid var(--gk)}
+.td{width:11px;height:11px;border-radius:50%}
+.td-r{background:#ff5f56}.td-y{background:#ffbd2e}.td-g{background:#27c93f}
+.term-ttl{font-size:10px;color:var(--gd);margin:0 auto;letter-spacing:2px}
+.term-body{padding:1.2rem;min-height:270px;font-size:12px}
+.tl{margin-bottom:3px}
+.tp{color:var(--amb)}.tc2{color:var(--g)}.to{color:var(--gd)}.tok{color:var(--g)}.thi{color:var(--cy)}.twn{color:var(--amb)}
+.tcur{display:inline-block;width:8px;height:13px;background:var(--g);vertical-align:text-bottom;animation:blink .8s step-end infinite}
+
+/* ── CONTACT ── */
+#contact{text-align:center}
+.contact-wrap{max-width:600px;margin:0 auto}
+.ctxt{font-size:12px;color:var(--gd);margin-bottom:2rem}
+.clinks{display:flex;justify-content:center;gap:.9rem;flex-wrap:wrap;margin-bottom:2rem}
+.clink{
+  font-family:'VT323',monospace;font-size:18px;color:var(--gd);text-decoration:none;
+  padding:7px 14px;border:1px solid var(--gk);letter-spacing:1px;transition:all .2s;
+}
+.clink:hover{color:var(--g);border-color:var(--g);box-shadow:var(--glow)}
+
+/* ── FOOTER ── */
+footer{
+  border-top:1px solid var(--gk);padding:1.1rem 2rem;
+  display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem;
+  font-size:10px;color:var(--gk);letter-spacing:1px;position:relative;z-index:1;
+}
+footer span{color:var(--gd)}
+
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--gk)}
+::-webkit-scrollbar-thumb:hover{background:var(--gd)}
+</style>
+</head>
+<body>
+<div class="pgbg"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">[<em>ML</em>_PORTFOLIO]</div>
+  <ul>
+    <li><a href="#story">Story</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Inventory</a></li>
+    <li><a href="#expertise">Abilities</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-hp">
+    HP&nbsp;
+    <span class="hp-heart">♥</span>
+    <span class="hp-heart">♥</span>
+    <span class="hp-heart">♥</span>
+    <span class="hp-heart e">♥</span>
+    <span class="hp-heart e">♥</span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="particles" id="particles"></div>
+  <div class="hero-inner reveal">
+    <div class="lvl-badge">PLAYER SELECT &nbsp;·&nbsp; <span class="lvl-n">LVL 22</span> &nbsp;·&nbsp; AI/ML ENGINEER</div>
+    <h1 class="hero-name">VAHE <em>HAMBARDZUMYAN</em></h1>
+    <div class="hero-class">AI / ML ENGINEER &amp; DATA SCIENCE</div>
+    <div class="tw-wrap"><span id="tw"></span><span class="cur"></span></div>
+    <div class="rpg-stats">
+      <div class="rstat"><span class="rstat-v">200+</span><span class="rstat-n">Litres of Coffee<br>Consumed ☕</span></div>
+      <div class="rstat"><span class="rstat-v">42k+</span><span class="rstat-n">Bugs Fixed<br> 🐛 </span></div>
+      <div class="rstat"><span class="rstat-v">34k+</span><span class="rstat-n">Escaped Local<br>Minima 📉→📈</span></div>
+      <!-- <div class="rstat"><span class="rstat-v">404</span><span class="rstat-n">Sleep Hours<br>Not Found 💤</span></div> -->
+    </div>
+    <div class="btns">
+      <a href="Vahe_Hambardzumyan_CV.pdf" download class="btn btn-a">▼ DOWNLOAD RESUME</a>
+      <a href="#projects" class="btn">▶ VIEW PROJECTS</a>
+    </div>
+  </div>
+</section>
+
+<!-- QUEST LOG -->
+<section id="story">
+  <div class="s-head reveal">
+    <div class="s-tag">// QUEST LOG //</div>
+    <h2 class="s-title">EDUCATION &amp; <em>EXPERIENCE</em></h2>
+    <div class="s-line"></div>
+  </div>
+  <div class="quest-log">
+
+    <div class="qi reveal">
+      <div class="qdot">🎓</div>
+      <div class="qbody">
+        <div class="qmeta"><span class="qyear">2021</span><span class="qt qt-edu">EDUCATION</span></div>
+        <div class="qtitle">B.Sc. Computer Science</div>
+        <div class="qorg">▸ French University in Armenia · 2021 – 2027</div>
+        <div class="qdesc">Relevant coursework: Data Structures, Algorithms, Database Systems, AI, Machine Learning, Software Engineering, Calculus, Linear Algebra, Statistics. Collaborated on bilingual French-English group projects strengthening communication and problem-solving skills.</div>
+        <span class="qxp">1200 Education XP</span>
+      </div>
+    </div>
+
+    <div class="qi reveal">
+      <div class="qdot">🎓</div>
+      <div class="qbody">
+        <div class="qmeta"><span class="qyear">2024</span><span class="qt qt-edu">EDUCATION</span></div>
+        <div class="qtitle">B.Sc. Computer Science </div>
+        <div class="qorg">▸ University of Toulouse · 2024 – 2027</div>
+        <div class="qdesc">International exchange programme deepening theoretical CS and AI foundations. Strengthened cross-cultural collaboration and technical communication in French and English academic environments.</div>
+        <span class="qxp">900 Education XP</span>
+      </div>
+    </div>
+
+    <div class="qi reveal">
+      <div class="qdot">🧠</div>
+      <div class="qbody">
+        <div class="qmeta"><span class="qyear">2024</span><span class="qt qt-edu">TRAINING</span></div>
+        <div class="qtitle">ML / DS Student</div>
+        <div class="qorg">▸ Picsart Academy · 2024 – 2025</div>
+        <div class="qdesc">Advanced ML/DS programme covering Deep Learning (CNNs, RNNs, Transformers), NLP, Computer Vision, Reinforcement Learning, and Generative AI including diffusion models. Strong mathematical grounding in Calculus, Linear Algebra, Probability, and Optimization.</div>
+        <span class="qxp">2200 Training XP</span>
+      </div>
+    </div>
+
+
+    <div class="qi reveal">
+      <div class="qdot">📊</div>
+      <div class="qbody">
+        <div class="qmeta"><span class="qyear">2025</span><span class="qt qt-work">WORK · CURRENT</span></div>
+        <div class="qtitle">Data Analyst</div>
+        <div class="qorg">▸ Trendsetter A Multibrand · Sep 2025 – Present</div>
+        <div class="qdesc">Hands-on end-to-end ETL processes ensuring clean, reliable data pipelines for analytical use. Business intelligence workflows supporting reporting and strategic decision-making. Interpreted complex datasets and presented insights through interactive Power BI and Tableau dashboards.</div>
+        <span class="qxp">1800 Work XP · ONGOING ▮</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="s-head reveal">
+    <div class="s-tag">// CHARACTER STATS //</div>
+    <h2 class="s-title">TECH <em>SKILLS</em></h2>
+    <div class="s-line"></div>
+  </div>
+  <div class="wrap">
+    <div class="scat reveal">
+      <div class="scat-title">ML / Deep Learning</div>
+      <div class="sbar"><div class="sbar-top"><span>Python</span><b>95</b></div><div class="sbar-track"><div class="sbar-fill" style="--w:95%"></div></div></div>
+      <div class="sbar"><div class="sbar-top"><span>scikit-learn</span><b>88</b></div><div class="sbar-track"><div class="sbar-fill" style="--w:88%"></div></div></div>
+      <div class="sbar"><div class="sbar-top"><span>Neural Networks / CNNs / RNNs</span><b>82</b></div><div class="sbar-track"><div class="sbar-fill" style="--w:82%"></div></div></div>
+      <div class="sbar"><div class="sbar-top"><span>Transformers (GPT/BERT/CLIP)</span><b>80</b></div><div class="sbar-track"><div class="sbar-fill" style="--w:80%"></div></div></div>
+      <div class="sbar"><div class="sbar-top"><span>Reinforcement Learning</span><b>78</b></div><div class="sbar-track"><div class="sbar-fill" style="--w:78%"></div></div></div>
+    </div>
+    <div class="scat reveal">
+      <div class="scat-title">Data & Analytics</div>
+      <div class="sbar"><div class="sbar-top"><span>SQL / DBMS</span><b>85</b></div><div class="sbar-track"><div class="sbar-fill" style="--w:85%"></div></div></div>
+      <div class="sbar"><div class="sbar-top"><span>ETL Pipelines</span><b>82</b></div><div class="sbar-track"><div class="sbar-fill" style="--w:82%"></div></div></div>
+      <div class="sbar"><div class="sbar-top"><span>Apache Airflow</span><b>75</b></div><div class="sbar-track"><div class="sbar-fill" style="--w:75%"></div></div></div>
+      <div class="sbar"><div class="sbar-top"><span>Power BI / Tableau</span><b>83</b></div><div class="sbar-track"><div class="sbar-fill" style="--w:83%"></div></div></div>
+      <div class="sbar"><div class="sbar-top"><span>A/B Testing</span><b>72</b></div><div class="sbar-track"><div class="sbar-fill" style="--w:72%"></div></div></div>
+    </div>
+    <div class="scat reveal">
+      <div class="scat-title">AI Specializations</div>
+      <div class="sbar"><div class="sbar-top"><span>Computer Vision</span><b>82</b></div><div class="sbar-track"><div class="sbar-fill" style="--w:82%"></div></div></div>
+      <div class="sbar"><div class="sbar-top"><span>NLP / LLMs</span><b>80</b></div><div class="sbar-track"><div class="sbar-fill" style="--w:80%"></div></div></div>
+      <div class="sbar"><div class="sbar-top"><span>Generative AI (DDPM/DDIM)</span><b>76</b></div><div class="sbar-track"><div class="sbar-fill" style="--w:76%"></div></div></div>
+      <div class="sbar"><div class="sbar-top"><span>Mathematics (Calculus/LinAlg/Stats)</span><b>90</b></div><div class="sbar-track"><div class="sbar-fill" style="--w:90%"></div></div></div>
+      <div class="sbar"><div class="sbar-top"><span>OOP / SOLID / Algorithms</span><b>85</b></div><div class="sbar-track"><div class="sbar-fill" style="--w:85%"></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- INVENTORY / PROJECTS -->
+<section id="projects">
+  <div class="s-head reveal">
+    <div class="s-tag">// INVENTORY //</div>
+    <h2 class="s-title">PROJECT <em>ARTIFACTS</em></h2>
+    <div class="s-line"></div>
+  </div>
+  <div class="inv-grid">
+
+    <div class="icard reveal">
+      <span class="rarity r-epic">◆ EPIC</span>
+      <div class="iid">ITEM_001 · REINFORCEMENT LEARNING</div>
+      <div class="iname">BANDIT PHARMA AI</div>
+      <div class="idesc">Multi-Armed Bandit algorithms for personalized drug-dosage optimization. Implemented ε-greedy, UCB1, and Thompson Sampling from scratch across 3 patient groups and 15 drug-dosage arms. Thompson Sampling cut regret by 12–27% vs baselines across 100 Monte Carlo runs.</div>
+      <div class="itags"><span class="itag">PYTHON</span><span class="itag">NUMPY</span><span class="itag">SCIPY</span><span class="itag">MATPLOTLIB</span><span class="itag">COLAB</span></div>
+      <div class="istats">
+        <div class="istat"><b>15</b> arms</div>
+        <div class="istat"><b>100</b> MC runs</div>
+        <div class="istat"><b>-27%</b> regret</div>
+      </div>
+      <div style="margin-top:.8rem;border-top:1px solid var(--gk);padding-top:.7rem">
+        <a href="https://github.com/vahehambardzumyan/Multiarmed_bandit_drug_optimization" target="_blank" style="font-size:10px;color:var(--amb);text-decoration:none;letter-spacing:1px">⌥ VIEW ON GITHUB →</a>
+      </div>
+    </div>
+
+    <div class="icard reveal">
+      <span class="rarity r-rare">◈ RARE</span>
+      <div class="iid">ITEM_002 · NLP / DATA SCIENCE</div>
+      <div class="iname">ARMENIAN NLP ENGINE</div>
+      <div class="idesc">Armenian news website scraper and NLP analysis pipeline targeting sentiment, tone, and media bias in political and economic coverage. Built to improve Armenian language datasets for LLM training — a language severely underrepresented in modern AI corpora.</div>
+      <div class="itags"><span class="itag">PYTHON</span><span class="itag">BEAUTIFULSOUP</span><span class="itag">SELENIUM</span><span class="itag">NLP</span><span class="itag">PANDAS</span></div>
+      <div class="istats">
+        <div class="istat"><b>NLP</b> pipeline</div>
+        <div class="istat"><b>ARM</b> language</div>
+        <div class="istat"><b>LLM</b> dataset</div>
+      </div>
+      <div style="margin-top:.8rem;border-top:1px solid var(--gk);padding-top:.7rem">
+        <a href="https://github.com/vahehambardzumyan/nlp_recommendation_system" target="_blank" style="font-size:10px;color:var(--amb);text-decoration:none;letter-spacing:1px">⌥ VIEW ON GITHUB →</a>
+      </div>
+    </div>
+
+    <div class="icard reveal">
+      <span class="rarity r-unc">· UNCOMMON</span>
+      <div class="iid">ITEM_003 · CLASSIFICATION</div>
+      <div class="iname">PERSONALITY CLASSIFIER</div>
+      <div class="idesc">Introvert vs Extrovert binary classifier using multiple ML algorithms. Full pipeline from data preprocessing and feature scaling to model training and evaluation. Benchmarks MLP, SVM, and Random Forest classifiers with confusion matrix and classification report output.</div>
+      <div class="itags"><span class="itag">SKLEARN</span><span class="itag">MLP</span><span class="itag">SVM</span><span class="itag">RANDOM FOREST</span><span class="itag">MATPLOTLIB</span></div>
+      <div class="istats">
+        <div class="istat"><b>3</b> models</div>
+        <div class="istat"><b>F1</b> scored</div>
+        <div class="istat"><b>binary</b> clf</div>
+      </div>
+      <div style="margin-top:.8rem;border-top:1px solid var(--gk);padding-top:.7rem">
+        <a href="https://github.com/vahehambardzumyan/Introvert_extrovert" target="_blank" style="font-size:10px;color:var(--amb);text-decoration:none;letter-spacing:1px">⌥ VIEW ON GITHUB →</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ABILITIES -->
+<section id="expertise">
+  <div class="s-head reveal">
+    <div class="s-tag">// ABILITY TREE //</div>
+    <h2 class="s-title">WHAT I <em>BUILD</em></h2>
+    <div class="s-line"></div>
+  </div>
+  <div class="wrap">
+    <div class="acard reveal"><span class="acd">MAX LVL</span><span class="aicon">🧠</span><div class="atitle">DEEP LEARNING</div><div class="adesc">CNNs, RNNs, Transformers. Computer vision, NLP, and multi-modal architectures. Strong mathematical grounding in optimization and probability theory.</div></div>
+    <div class="acard reveal"><span class="acd">LVL 8</span><span class="aicon">🔬</span><div class="atitle">GENERATIVE AI</div><div class="adesc">Diffusion model fundamentals including DDPM and DDIM. Understanding of latent space manipulation and generative architecture design.</div></div>
+    <div class="acard reveal"><span class="acd">LVL 8</span><span class="aicon">🎮</span><div class="atitle">REINFORCEMENT LEARNING</div><div class="adesc">Multi-armed bandits, policy optimization, reward shaping. Applied RL to real-world medical optimization with measurable regret reduction.</div></div>
+    <div class="acard reveal"><span class="acd">LVL 9</span><span class="aicon">📊</span><div class="atitle">ANALYTICS & BI</div><div class="adesc">End-to-end ETL pipelines, SQL, Apache Airflow, Power BI, and Tableau. Translating raw data into actionable business insights.</div></div>
+    <div class="acard reveal"><span class="acd">LVL 8</span><span class="aicon">💬</span><div class="atitle">NLP & LLMs</div><div class="adesc">GPT, BERT, CLIP architectures. Transformer fine-tuning, Armenian NLP dataset work, sentiment analysis and media bias detection.</div></div>
+    <div class="acard reveal"><span class="acd">LVL 7</span><span class="aicon">🌍</span><div class="atitle">MULTILINGUAL</div><div class="adesc">Armenian (native), French (fluent), English (fluent), Russian (fluent), Spanish (elementary). Collaboration across cultures and academic institutions.</div></div>
+  </div>
+</section>
+
+<!-- TERMINAL -->
+<section id="terminal-section">
+  <div class="term-win reveal">
+    <div class="term-bar">
+      <div class="td td-r"></div><div class="td td-y"></div><div class="td td-g"></div>
+      <div class="term-ttl">vahe@ml-box — bash — 80×24</div>
+    </div>
+    <div class="term-body" id="tb"></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="s-head reveal">
+    <div class="s-tag">// SEND MESSAGE //</div>
+    <h2 class="s-title">GET IN <em>TOUCH</em></h2>
+    <div class="s-line"></div>
+  </div>
+  <div class="contact-wrap">
+    <p class="ctxt reveal">Open to ML/AI roles, data science positions, and interesting research collaborations. Based in Yerevan, Armenia. Let's build something meaningful.</p>
+    <div class="clinks reveal">
+      <a href="mailto:ham.vahe@gmail.com" class="clink">✉ EMAIL</a>
+      <a href="https://www.linkedin.com/in/vahe-hambardzumyan/" target="_blank" class="clink">in LINKEDIN</a>
+      <a href="https://github.com/vahehambardzumyan" target="_blank" class="clink">⌥ GITHUB</a>
+    </div>
+    <a href="Vahe_Hambardzumyan_CV.pdf" download class="btn btn-a reveal">▼ DOWNLOAD RESUME</a>
+  </div>
+</section>
+
+<footer>
+  <span>© 2026 VAHE HAMBARDZUMYAN // AI_ML_ENGINEER v1.0</span>
+  <span>SAVE: auto ✓</span>
+  <span>STATUS: <span style="color:var(--g)">ALL SYSTEMS GO</span></span>
+</footer>
+
+<script>
+/* Particles */
+const pw=document.getElementById('particles');
+for(let i=0;i<20;i++){
+  const p=document.createElement('div');p.className='pt';
+  const dur=9+Math.random()*14,delay=-Math.random()*dur,dx=(Math.random()-.5)*70+'px';
+  p.style.cssText=`left:${Math.random()*100}%;bottom:0;animation-duration:${dur}s;animation-delay:${delay}s;--dx:${dx};opacity:${.25+Math.random()*.4}`;
+  pw.appendChild(p);
+}
+
+/* Typewriter */
+const phrases=['Building RL agents for medical optimization...','Training NLP models on Armenian text...','Classifying personalities with ML pipelines...','Turning messy data into actionable insights...','Fine-tuning transformers and diffusion models...','ETL pipelines that actually stay clean...'];
+let pi=0,ci=0,del=false;
+const twEl=document.getElementById('tw');
+function tw(){
+  const s=phrases[pi];
+  twEl.textContent=del?s.slice(0,--ci):s.slice(0,++ci);
+  if(!del&&ci===s.length){del=true;setTimeout(tw,1800);return}
+  if(del&&ci===0){del=false;pi=(pi+1)%phrases.length}
+  setTimeout(tw,del?35:65);
+}
+tw();
+
+/* Reveal */
+const ro=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('in')})},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>ro.observe(el));
+
+/* Skill bars */
+const bo=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.querySelectorAll('.sbar-fill').forEach(b=>b.classList.add('on'))})},{threshold:.3});
+document.querySelectorAll('.scat').forEach(c=>bo.observe(c));
+
+/* Terminal */
+const lines=[
+  {k:'p',t:'python train.py --model transformer --dataset medical_v3 --epochs 100'},
+  {k:'o',t:'Initializing experiment: exp_2026_03_15_0901',c:'thi'},
+  {k:'o',t:'Loading 48,291 samples... ████████████████ 100%',c:'tok'},
+  {k:'o',t:'Epoch  10/100 | loss: 1.8821 | val: 1.9102'},
+  {k:'o',t:'Epoch  50/100 | loss: 0.4231 | val: 0.4519'},
+  {k:'o',t:'Epoch 100/100 | loss: 0.1903 | val: 0.1947 ✓ best',c:'tok'},
+  {k:'o',t:'Training complete. Checkpoint saved.'},
+  {k:'p',t:'python evaluate.py --ckpt checkpoints/best.pt'},
+  {k:'o',t:'─────────────── RESULTS ───────────────',c:'thi'},
+  {k:'o',t:'  Accuracy : 98.41%  ↑ +2.1% vs baseline',c:'thi'},
+  {k:'o',t:'  Precision: 97.83%  ↑  Recall: 98.09%  ↑',c:'thi'},
+  {k:'o',t:'  F1-Score : 97.96%  ↑',c:'thi'},
+  {k:'o',t:'────────────────────────────────────────',c:'thi'},
+  {k:'p',t:'mlflow models serve -m "models:/prod_v3/latest" -p 5000'},
+  {k:'o',t:'Server ready → http://0.0.0.0:5000',c:'twn'},
+  {k:'o',t:'Endpoints: /predict  /batch  /health',c:'tok'},
+  {k:'c'}
+];
+const tb=document.getElementById('tb');
+let li=0,started=false;
+function addLine(){
+  if(li>=lines.length)return;
+  const l=lines[li++];
+  const d=document.createElement('div');d.className='tl';
+  if(l.k==='p') d.innerHTML=`<span class="tp">$ </span><span class="tc2">${l.t}</span>`;
+  else if(l.k==='c') d.innerHTML=`<span class="tp">$ </span><span class="tcur"></span>`;
+  else d.innerHTML=`<span class="to ${l.c||''}">${l.t}</span>`;
+  tb.appendChild(d);tb.scrollTop=tb.scrollHeight;
+  setTimeout(addLine,l.k==='p'?520:l.c==='tok'?260:l.c==='thi'?190:140);
+}
+const to=new IntersectionObserver(e=>{if(e[0].isIntersecting&&!started){started=true;addLine();}},{threshold:.3});
+const tsec=document.getElementById('terminal-section');
+if(tsec)to.observe(tsec);
+
+/* HP bar random drain */
+const hearts=document.querySelectorAll('.hp-heart:not(.e)');
+setInterval(()=>{
+  const alive=[...hearts].filter(h=>h.style.color!=='var(--gk)');
+  if(alive.length&&Math.random()<.05){
+    alive[alive.length-1].style.color='var(--gk)';
+    alive[alive.length-1].style.animation='none';
+  }
+},3000);
+</script>
+</body>
+</html>
